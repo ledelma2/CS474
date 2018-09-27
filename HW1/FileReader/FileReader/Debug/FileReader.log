@@ -1,0 +1,8 @@
+﻿  FileReader.cpp
+c1xx : warning C4199: two-phase name lookup is not supported for C++/CLI, C++/CX, or OpenMP; use /Zc:twoPhase-
+c:\users\liam edelman\documents\school\cs474\hw1\filereader\filereader\filereader.cpp(89): warning C4018: '<': signed/unsigned mismatch
+c:\users\liam edelman\documents\school\cs474\hw1\filereader\filereader\filereader.cpp(103): warning C4018: '<': signed/unsigned mismatch
+c:\users\liam edelman\documents\school\cs474\hw1\filereader\filereader\filereader.cpp(114): warning C4018: '<': signed/unsigned mismatch
+  FileReader.obj : /DEBUG:FASTLINK is not supported when managed code is present; restarting link with /DEBUG:FULL
+  FileReader.obj : MSIL module encountered; incremental linking is disabled for MSIL; performing full link
+  FileReader.vcxproj -> C:\Users\Liam Edelman\Documents\School\CS474\HW1\FileReader\Debug\FileReader.exe
