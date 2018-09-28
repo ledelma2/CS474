@@ -1,11 +1,7 @@
 import com.opencsv.*;
 import java.io.*;
 import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Scanner;
-import java.util.StringTokenizer;
+import java.util.*;
 
 public class Main {
 
@@ -17,10 +13,10 @@ public class Main {
         return null;
     }
 
-    public static void main(String[] args) throws FileNotFoundException, IOException
+    public static void main(String[] args) throws FileNotFoundException, IOException, InputMismatchException
     {
         String path = System.getProperty("user.dir");
-        int response = -1;
+        String response;
         Scanner in = new Scanner(System.in);
         File f;
         ArrayList<String> headers = new ArrayList<String>();
@@ -31,19 +27,21 @@ public class Main {
         ArrayList<TA> tas = new ArrayList<TA>();
         while(true)
         {
+            in.reset();
             System.out.print("Enter action number [0, 1, 2, 3, 4, 5, 6, or 7]: ");
-            response = in.nextInt();
-            if(response == 0)
+            response = in.nextLine();
+            if(response.equals("0"))
             {
                 System.out.print("Goodbye");
                 break;
             }
-            else if(response == 1)
+            else if(response.equals("1"))
             {
                 System.out.print("Enter name of .csv file: ");
-                f = new File(path + "\\" + in.next());
+                f = new File(path + "\\" + in.nextLine());
                 if(!(f.exists() && f.canRead())){
                     System.out.println("File does not exist or is not readable...");
+                    continue;
                 }else{
                     CSVReader cr = new CSVReaderBuilder(new FileReader(f)).build();
                     String[] line = cr.readNext();
@@ -131,27 +129,30 @@ public class Main {
                     }
                 }
             }
-            else if(response == 2)
+            else if(response.equals("2"))
+            {
+                System.out.println("Please enter a name to add to the directory [First Last]: ");
+                String name = in.nextLine();
+                System.out.println("Please enter a role for the person [Student, TA, Instructor, Staff]: ");
+                String role = in.nextLine();
+            }
+            else if(response.equals("3"))
             {
 
             }
-            else if(response == 3)
+            else if(response.equals("4"))
             {
 
             }
-            else if(response == 4)
+            else if(response.equals("5"))
             {
 
             }
-            else if(response == 5)
+            else if(response.equals("6"))
             {
 
             }
-            else if(response == 6)
-            {
-
-            }
-            else if(response == 7)
+            else if(response.equals("7"))
             {
 
             }
@@ -159,7 +160,7 @@ public class Main {
             {
                 System.out.println("Invalid command, try again");
             }
-            System.out.println("Courses:");
+            /*System.out.println("Courses:");
             for(Course c: courses)
                 System.out.println("\t" + c.getCourseName());
             System.out.println("Students:");
@@ -173,7 +174,7 @@ public class Main {
                 System.out.println("\t" + i.getFirstName() + " " + i.getLastName());
             System.out.println("TA's:");
             for(TA t: tas)
-                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());
+                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());*/
         }
     }
 }
