@@ -6,4 +6,6 @@ public interface Student{
 
     public void addEnrolledCourse(Course c);
     public void printEnrolledCourses();
+    public String getFirstName();
+    public String getLastName();
 }

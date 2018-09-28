@@ -1,0 +1,8 @@
+User ID,First Name,Last Name,Email,Role,Courses Teaching,Courses Taken,Courses Taking,GPA,Salary,Hours Worked
+12,Greg,Armstrong,ga@q.edu,Student,,"ICE 101, ICE 102",ICE 201,3,,
+32,Jerry,MacGregor,jam@q.edu,TA,"FIR 225, FIR 280","FIR 101, FIR 225, FIR 280",FIR 301,,40,20
+58,Anastasia,Svent,sva@q.edu,Student,,"LIT 101, LIT 201",LIT 253,3.5,,
+74,Gerald,Newhaven,ghw@q.edu,Student,,"EAR 101, EAR 102, EAR 201, EAR 202","EAR 268, WAT 105",3.5,,
+86,Nieve,Cygnus,ncn@q.edu,Instructor,"WIN 470, WIN 488, WIN 492",,,,50000,
+99,Theresa,Blake,tbla@q.edu,Instructor,"WAT 140, WAT 240, WAT 340, WAT 440",,,,60000,
+115,Bernard,Soverign,sov@q.edu,Staff,,,,,55000,

@@ -4,12 +4,18 @@ public class Course {
 
     private String CourseName;
     private ArrayList<TA> TAs;
-    private ArrayList<Person> Students;
+    private ArrayList<Student> Students;
     private Instructor Professor;
+
+    public Course()
+    {}
 
     public Course(String n) {
 
         CourseName = new String(n);
+        TAs = new ArrayList<>();
+        Students = new ArrayList<>();
+        Professor = new Instructor();
     }
 
     public String getCourseName() {
@@ -24,12 +30,16 @@ public class Course {
 
     public void addTA(TA t)
     {
+        if(TAs.isEmpty())
+            TAs.add(t);
         if(!(TAs.contains(t)))
             TAs.add(t);
     }
 
-    public void addStudent(Person s)
+    public void addStudent(Student s)
     {
+        if(Students.isEmpty())
+            Students.add(s);
         if(!(Students.contains(s)))
             Students.add(s);
     }
@@ -46,7 +56,12 @@ public class Course {
     
     public void printStudents()
     {
-        for (Person s: Students)
+        if(Students.isEmpty())
+        {
+            System.out.println("Student array empty");
+            return;
+        }
+        for (Student s: Students)
         {
             System.out.println(s.getFirstName() + s.getLastName());
         }

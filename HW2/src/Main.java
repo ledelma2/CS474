@@ -9,6 +9,14 @@ import java.util.StringTokenizer;
 
 public class Main {
 
+    public static Course courseInList(ArrayList<Course> total, String coursename)
+    {
+        for(Course t: total)
+            if(t.getCourseName().equals(coursename))
+                return t;
+        return null;
+    }
+
     public static void main(String[] args) throws FileNotFoundException, IOException
     {
         String path = System.getProperty("user.dir");
@@ -48,28 +56,80 @@ public class Main {
                     headers = new ArrayList<String>(Arrays.asList(line));
                     int crTakeingIDX = headers.indexOf("Courses Taking");
                     int crTeachingIDX = headers.indexOf("Courses Teaching");
+                    int first = headers.indexOf("First Name");
+                    int last = headers.indexOf("Last Name");
                     while((line = cr.readNext()) != null)
                     {
-                        if(line[crTakeingIDX] != null && line[crTeachingIDX] != null)
+                        if(!(line[crTakeingIDX].isEmpty()) && !(line[crTeachingIDX].isEmpty()))
                         {
                             //TA
-
+                            TA ta = new TA(line[first], line[last], line);
+                            String[] taking = line[crTakeingIDX].split(",");
+                            String[] teaching = line[crTeachingIDX].split(",");
+                            for(String p: teaching) {
+                                String s = p.trim();
+                                Course c = courseInList(courses, s);
+                                if (c == null) {
+                                    c = new Course(s);
+                                    courses.add(c);
+                                }
+                                ta.addTeachingCourse(c);
+                                c.addTA(ta);
+                            }
+                            for(String p: taking) {
+                                String s = p.trim();
+                                Course c = courseInList(courses, s);
+                                if (c == null) {
+                                    c = new Course(s);
+                                    courses.add(c);
+                                }
+                                ta.addEnrolledCourse(c);
+                                c.addStudent(ta);
+                            }
+                            tas.add(ta);
                         }
-                        else if(line[crTakeingIDX] != null && line[crTeachingIDX] == null)
+                        else if(!(line[crTakeingIDX].isEmpty()) && (line[crTeachingIDX].isEmpty()))
                         {
                             //Student
+                            Student st = new Person(line[first], line[last], line);
+                            String[] taking = line[crTakeingIDX].split(",");
+                            for(String p: taking) {
+                                String s = p.trim();
+                                Course c = courseInList(courses, s);
+                                if (c == null) {
+                                    c = new Course(s);
+                                    courses.add(c);
+                                }
+                                st.addEnrolledCourse(c);
+                                c.addStudent(st);
+                            }
+                            students.add(st);
                         }
-                        else if(line[crTakeingIDX] == null && line[crTeachingIDX] != null)
+                        else if((line[crTakeingIDX].isEmpty()) && !(line[crTeachingIDX].isEmpty()))
                         {
                             //Instructor
+                            Instructor i = new Instructor(line[first], line[last], line);
+                            String[] teaching = line[crTeachingIDX].split(",");
+                            for(String p: teaching) {
+                                String s = p.trim();
+                                Course c = courseInList(courses, s);
+                                if (c == null) {
+                                    c = new Course(s);
+                                    courses.add(c);
+                                }
+                                i.addTeachingCourse(c);
+                                c.addInstructor(i);
+                            }
+                            instructors.add(i);
                         }
-                        else if(line[crTakeingIDX] == null && line[crTeachingIDX] == null)
+                        else if((line[crTakeingIDX].isEmpty()) && (line[crTeachingIDX].isEmpty()))
                         {
                             //Staff
+                            Staff st = new Staff(line[first], line[last], line);
+                            staff.add(st);
                         }
                     }
                 }
-
             }
             else if(response == 2)
             {
@@ -97,8 +157,23 @@ public class Main {
             }
             else
             {
-
+                System.out.println("Invalid command, try again");
             }
+            System.out.println("Courses:");
+            for(Course c: courses)
+                System.out.println("\t" + c.getCourseName());
+            System.out.println("Students:");
+            for(Student s: students)
+                System.out.println("\t" + s.getFirstName() + " " + s.getLastName());
+            System.out.println("Staff:");
+            for(Staff s: staff)
+                System.out.println("\t" + s.getFirstName() + " " + s.getLastName());
+            System.out.println("Instructors:");
+            for(Instructor i: instructors)
+                System.out.println("\t" + i.getFirstName() + " " + i.getLastName());
+            System.out.println("TA's:");
+            for(TA t: tas)
+                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());
         }
     }
 }
