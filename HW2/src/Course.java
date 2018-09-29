@@ -15,7 +15,6 @@ public class Course {
         CourseName = new String(n);
         TAs = new ArrayList<>();
         Students = new ArrayList<>();
-        Professor = new Instructor();
     }
 
     public String getCourseName() {
@@ -46,24 +45,21 @@ public class Course {
 
     public void addInstructor(Instructor i)
     {
-        if(Professor != null)
-            Professor = i;
+        String[] attr = new String[i.getAttributes().size()];
+        i.getAttributes().toArray(attr);
+        Professor = new Instructor(i.getFirstName(), i.getLastName(), attr);
     }
 
     public Instructor getProfessor() {
         return Professor;
     }
     
-    public void printStudents()
+    public ArrayList<Student> getStudents()
     {
-        if(Students.isEmpty())
-        {
-            System.out.println("Student array empty");
-            return;
-        }
-        for (Student s: Students)
-        {
-            System.out.println(s.getFirstName() + s.getLastName());
-        }
+        return Students;
+    }
+
+    public ArrayList<TA> getTAs() {
+        return TAs;
     }
 }

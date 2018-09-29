@@ -20,11 +20,8 @@ public class Instructor extends Staff{
             Teaching.add(c);
     }
 
-    public void printTeachingCourses()
-    {
-        for (Course c: Teaching) {
-            System.out.println(c.getCourseName());
-        }
+    public ArrayList<Course> getTeaching() {
+        return Teaching;
     }
 
     public void getPaid(int salIDX)

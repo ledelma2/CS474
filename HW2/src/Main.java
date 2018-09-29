@@ -301,11 +301,46 @@ public class Main {
             }
             else if(response.equals("4"))
             {
-
+                boolean printed = false;
+                System.out.print("Enter a course name: ");
+                String coursename = in.nextLine();
+                for(Course c: courses)
+                {
+                    if(c.getCourseName().equals(coursename))
+                    {
+                        System.out.println("Course: " + c.getCourseName());
+                        System.out.println("Instructor:");
+                        System.out.println("\t" + c.getProfessor().getFirstName() + " " + c.getProfessor().getLastName());
+                        System.out.println("TA's:");
+                        for(TA t: c.getTAs())
+                            System.out.println("\t" + t.getFirstName() + " " + t.getLastName());
+                        System.out.println("Students:");
+                        for(Student s: c.getStudents())
+                            System.out.println("\t" + s.getFirstName() + " " + s.getLastName());
+                        printed = true;
+                        break;
+                    }
+                }
+                if(!printed)
+                    System.out.println("Course doesn't exist...");
             }
             else if(response.equals("5"))
             {
-
+                System.out.println("Courses without an instructor:");
+                for(Course c: courses)
+                {
+                    if(c.getProfessor() == null)
+                        System.out.println("\t" + c.getCourseName());
+                }
+                System.out.println("Instructors with Courses:");
+                for(Instructor i: instructors)
+                {
+                    System.out.println("\t" + i.getFirstName() + " " + i.getLastName() + ":");
+                    for(Course c: i.getTeaching())
+                    {
+                        System.out.println("\t\t" + c.getCourseName());
+                    }
+                }
             }
             else if(response.equals("6"))
             {
@@ -319,7 +354,7 @@ public class Main {
             {
                 System.out.println("Invalid command, try again");
             }
-            System.out.println("Courses:");
+            /*System.out.println("Courses:");
             for(Course c: courses)
                 System.out.println("\t" + c.getCourseName());
             System.out.println("Students:");
@@ -333,7 +368,7 @@ public class Main {
                 System.out.println("\t" + i.getFirstName() + " " + i.getLastName());
             System.out.println("TA's:");
             for(TA t: tas)
-                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());
+                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());*/
         }
     }
 }

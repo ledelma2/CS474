@@ -53,5 +53,9 @@ public class Person implements Student{
 
         return Attributes.get(attrIDX);
     }
+
+    public ArrayList<String> getAttributes() {
+        return Attributes;
+    }
 }
 
