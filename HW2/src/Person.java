@@ -18,6 +18,13 @@ public class Person implements Student{
         Attributes = new ArrayList<String>(Arrays.asList(attr));
     }
 
+    public Person(String f, String l, ArrayList<String> attr)
+    {
+        FirstName = new String(f);
+        LastName = new String(l);
+        Attributes = new ArrayList<String>(attr);
+    }
+
     public String getFirstName() {
 
         return FirstName;

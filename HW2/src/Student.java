@@ -8,4 +8,5 @@ public interface Student{
     public void printEnrolledCourses();
     public String getFirstName();
     public String getLastName();
+    public String getAttribute(int attrIDX);
 }

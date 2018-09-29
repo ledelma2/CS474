@@ -13,6 +13,74 @@ public class Main {
         return null;
     }
 
+    public static void addStudent(String[] line, int fIDX, int lIDX, int tIDX, ArrayList<Course> courses, ArrayList<Student> students)
+    {
+        Student st = new Person(line[fIDX], line[lIDX], line);
+        String[] taking = line[tIDX].split(",");
+        for(String p: taking) {
+            String s = p.trim();
+            Course c = courseInList(courses, s);
+            if (c == null) {
+                c = new Course(s);
+                courses.add(c);
+            }
+            st.addEnrolledCourse(c);
+            c.addStudent(st);
+        }
+        students.add(st);
+    }
+
+    public static void addTA(String[] line, int fIDX, int lIDX, int taIDX, int teIDX, ArrayList<Course> courses, ArrayList<TA> tas)
+    {
+        TA ta = new TA(line[fIDX], line[lIDX], line);
+        String[] taking = line[taIDX].split(",");
+        String[] teaching = line[teIDX].split(",");
+        for(String p: teaching) {
+            String s = p.trim();
+            Course c = courseInList(courses, s);
+            if (c == null) {
+                c = new Course(s);
+                courses.add(c);
+            }
+            ta.addTeachingCourse(c);
+            c.addTA(ta);
+        }
+        for(String p: taking) {
+            String s = p.trim();
+            Course c = courseInList(courses, s);
+            if (c == null) {
+                c = new Course(s);
+                courses.add(c);
+            }
+            ta.addEnrolledCourse(c);
+            c.addStudent(ta);
+        }
+        tas.add(ta);
+    }
+
+    public static void addInstructor(String[] line, int fIDX, int lIDX, int teIDX, ArrayList<Course> courses, ArrayList<Instructor> instructors)
+    {
+        Instructor i = new Instructor(line[fIDX], line[lIDX], line);
+        String[] teaching = line[teIDX].split(",");
+        for(String p: teaching) {
+            String s = p.trim();
+            Course c = courseInList(courses, s);
+            if (c == null) {
+                c = new Course(s);
+                courses.add(c);
+            }
+            i.addTeachingCourse(c);
+            c.addInstructor(i);
+        }
+        instructors.add(i);
+    }
+
+    public static void addStaff(String[] line, int fIDX, int lIDX, ArrayList<Staff> staff)
+    {
+        Staff st = new Staff(line[fIDX], line[lIDX], line);
+        staff.add(st);
+    }
+
     public static void main(String[] args) throws FileNotFoundException, IOException, InputMismatchException
     {
         String path = System.getProperty("user.dir");
@@ -61,70 +129,22 @@ public class Main {
                         if(!(line[crTakeingIDX].isEmpty()) && !(line[crTeachingIDX].isEmpty()))
                         {
                             //TA
-                            TA ta = new TA(line[first], line[last], line);
-                            String[] taking = line[crTakeingIDX].split(",");
-                            String[] teaching = line[crTeachingIDX].split(",");
-                            for(String p: teaching) {
-                                String s = p.trim();
-                                Course c = courseInList(courses, s);
-                                if (c == null) {
-                                    c = new Course(s);
-                                    courses.add(c);
-                                }
-                                ta.addTeachingCourse(c);
-                                c.addTA(ta);
-                            }
-                            for(String p: taking) {
-                                String s = p.trim();
-                                Course c = courseInList(courses, s);
-                                if (c == null) {
-                                    c = new Course(s);
-                                    courses.add(c);
-                                }
-                                ta.addEnrolledCourse(c);
-                                c.addStudent(ta);
-                            }
-                            tas.add(ta);
+                            addTA(line, first, last, crTakeingIDX, crTeachingIDX, courses, tas);
                         }
                         else if(!(line[crTakeingIDX].isEmpty()) && (line[crTeachingIDX].isEmpty()))
                         {
                             //Student
-                            Student st = new Person(line[first], line[last], line);
-                            String[] taking = line[crTakeingIDX].split(",");
-                            for(String p: taking) {
-                                String s = p.trim();
-                                Course c = courseInList(courses, s);
-                                if (c == null) {
-                                    c = new Course(s);
-                                    courses.add(c);
-                                }
-                                st.addEnrolledCourse(c);
-                                c.addStudent(st);
-                            }
-                            students.add(st);
+                            addStudent(line, first, last, crTakeingIDX, courses, students);
                         }
                         else if((line[crTakeingIDX].isEmpty()) && !(line[crTeachingIDX].isEmpty()))
                         {
                             //Instructor
-                            Instructor i = new Instructor(line[first], line[last], line);
-                            String[] teaching = line[crTeachingIDX].split(",");
-                            for(String p: teaching) {
-                                String s = p.trim();
-                                Course c = courseInList(courses, s);
-                                if (c == null) {
-                                    c = new Course(s);
-                                    courses.add(c);
-                                }
-                                i.addTeachingCourse(c);
-                                c.addInstructor(i);
-                            }
-                            instructors.add(i);
+                            addInstructor(line, first, last, crTeachingIDX, courses, instructors);
                         }
                         else if((line[crTakeingIDX].isEmpty()) && (line[crTeachingIDX].isEmpty()))
                         {
                             //Staff
-                            Staff st = new Staff(line[first], line[last], line);
-                            staff.add(st);
+                            addStaff(line, first, last, staff);
                         }
                     }
                 }
@@ -133,8 +153,147 @@ public class Main {
             {
                 System.out.println("Please enter a name to add to the directory [First Last]: ");
                 String name = in.nextLine();
+                name = name.trim();
+                String[] firstlast = name.split(" ");
                 System.out.println("Please enter a role for the person [Student, TA, Instructor, Staff]: ");
                 String role = in.nextLine();
+                if(headers.isEmpty())
+                {
+                    headers.add("First Name");
+                    headers.add("Last Name");
+                    headers.add("Role");
+                    headers.add("Courses Taking");
+                    headers.add("Courses Teaching");
+                    headers.add("Courses Taken");
+                }
+                int crTakeingIDX = headers.indexOf("Courses Taking");
+                int crTeachingIDX = headers.indexOf("Courses Teaching");
+                int first = headers.indexOf("First Name");
+                int last = headers.indexOf("Last Name");
+                if(role.equals("Student"))
+                {
+                    ArrayList<String> attr = new ArrayList<>();
+                    for(int i = 0; i < headers.size(); i++)
+                    {
+                        String curAttr = headers.get(i);
+                        if(curAttr.equals("First Name"))
+                        {
+                            attr.add(firstlast[0]);
+                        }
+                        else if(curAttr.equals("Last Name"))
+                        {
+                            attr.add(firstlast[1]);
+                        }
+                        else if (curAttr.equals("Role"))
+                        {
+                            attr.add("Student");
+                        }
+                        else if(curAttr.equals("Courses Teaching"))
+                        {
+                            attr.add("");
+                        }
+                        else {
+                            System.out.println("Please enter the person's " + curAttr + " : ");
+                            attr.add(in.nextLine());
+                        }
+                    }
+                    String[] line = new String[headers.size()];
+                    attr.toArray(line);
+                    addStudent(line, first, last, crTakeingIDX, courses, students);
+                }
+                else if(role.equals("TA"))
+                {
+                    ArrayList<String> attr = new ArrayList<>();
+                    for(int i = 0; i < headers.size(); i++)
+                    {
+                        String curAttr = headers.get(i);
+                        if(curAttr.equals("First Name"))
+                        {
+                            attr.add(firstlast[0]);
+                        }
+                        else if(curAttr.equals("Last Name"))
+                        {
+                            attr.add(firstlast[1]);
+                        }
+                        else if (curAttr.equals("Role"))
+                        {
+                            attr.add("TA");
+                        }
+                        else {
+                            System.out.println("Please enter the person's " + curAttr + " : ");
+                            attr.add(in.nextLine());
+                        }
+                    }
+                    String[] line = new String[headers.size()];
+                    attr.toArray(line);
+                    addTA(line, first, last, crTakeingIDX, crTeachingIDX, courses, tas);
+                }
+                else if(role.equals("Instructor"))
+                {
+                    ArrayList<String> attr = new ArrayList<>();
+                    for(int i = 0; i < headers.size(); i++)
+                    {
+                        String curAttr = headers.get(i);
+                        if(curAttr.equals("First Name"))
+                        {
+                            attr.add(firstlast[0]);
+                        }
+                        else if(curAttr.equals("Last Name"))
+                        {
+                            attr.add(firstlast[1]);
+                        }
+                        else if (curAttr.equals("Role"))
+                        {
+                            attr.add("Student");
+                        }
+                        else if(curAttr.equals("Courses Taking") || curAttr.equals("Courses Taken"))
+                        {
+                            attr.add("");
+                        }
+                        else {
+                            System.out.println("Please enter the person's " + curAttr + " : ");
+                            attr.add(in.nextLine());
+                        }
+                    }
+                    String[] line = new String[headers.size()];
+                    attr.toArray(line);
+                    addInstructor(line, first, last, crTeachingIDX, courses, instructors);
+                }
+                else if(role.equals("Staff"))
+                {
+                    ArrayList<String> attr = new ArrayList<>();
+                    for(int i = 0; i < headers.size(); i++)
+                    {
+                        String curAttr = headers.get(i);
+                        if(curAttr.equals("First Name"))
+                        {
+                            attr.add(firstlast[0]);
+                        }
+                        else if(curAttr.equals("Last Name"))
+                        {
+                            attr.add(firstlast[1]);
+                        }
+                        else if (curAttr.equals("Role"))
+                        {
+                            attr.add("Student");
+                        }
+                        else if(curAttr.equals("Courses Taking") || curAttr.equals("Courses Taken") || curAttr.equals("Courses Teaching"))
+                        {
+                            attr.add("");
+                        }
+                        else {
+                            System.out.println("Please enter the person's " + curAttr + " : ");
+                            attr.add(in.nextLine());
+                        }
+                    }
+                    String[] line = new String[headers.size()];
+                    attr.toArray(line);
+                    addStaff(line, first, last, staff);
+                }
+                else
+                {
+                    System.out.println(role + "is not a valid role...");
+                }
             }
             else if(response.equals("3"))
             {
@@ -160,7 +319,7 @@ public class Main {
             {
                 System.out.println("Invalid command, try again");
             }
-            /*System.out.println("Courses:");
+            System.out.println("Courses:");
             for(Course c: courses)
                 System.out.println("\t" + c.getCourseName());
             System.out.println("Students:");
@@ -174,7 +333,7 @@ public class Main {
                 System.out.println("\t" + i.getFirstName() + " " + i.getLastName());
             System.out.println("TA's:");
             for(TA t: tas)
-                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());*/
+                System.out.println("\t" + t.getFirstName() + " " + t.getLastName());
         }
     }
 }
