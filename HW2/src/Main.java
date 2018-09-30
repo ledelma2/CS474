@@ -344,7 +344,26 @@ public class Main {
             }
             else if(response.equals("6"))
             {
-
+                int hoursIndex = headers.indexOf("Hours Worked");
+                int salaryIndex = headers.indexOf("Salary");
+                if(hoursIndex != -1 && salaryIndex != -1) {
+                    for(TA t: tas)
+                    {
+                        t.getPaid(salaryIndex, hoursIndex);
+                        //System.out.println(t.getMoney());
+                    }
+                }
+                if(salaryIndex != -1)
+                {
+                    for(Staff s: staff) {
+                        s.getPaid(salaryIndex);
+                        //System.out.println(s.getMoney());
+                    }
+                    for(Instructor i: instructors) {
+                        i.getPaid(salaryIndex);
+                        //System.out.println(i.getMoney());
+                    }
+                }
             }
             else if(response.equals("7"))
             {
